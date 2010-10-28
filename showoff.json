@@ -5,12 +5,17 @@
     , {"section":"modal"}           // optimists
     , {"section":"crutches"}        // surrealists
     , {"section":"thinking-doing"}
-    , {"section":"cursor-movement"} // ninjas
+    , {"section":"cursor-movement"}
+    , {"section":"finding-characters"}
+    , {"section":"search-to-navigate"} // ninjas
     , {"section":"text-objects"}
     , {"section":"credits"}         // pirates
   ]
 }
 
-
-
+// cmd-1  "You don't grok Vim"
+// cmd-2  "You confuse it with Vi"
+// cmd-3  "Knight's move alternate definition"
+// cmd-4  "Flying kick"
+// cmd-5  "Scissor kick"
 

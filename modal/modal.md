@@ -8,12 +8,7 @@
 
 !SLIDE
 
-## Incredulously:
-### You mean, I have to **do X** before I can enter any text?
-
-!SLIDE center
-
-![An old fashioned typewriter](../images/typewriter-blue.jpg)     
+# WHY MODAL?
 
 !SLIDE bullets
 
@@ -80,7 +75,7 @@
 !SLIDE bullets incremental
 
 # TEXTMATE 
-## is a 
+## IS A
 # MODAL EDITOR!
 
 * not a very good one

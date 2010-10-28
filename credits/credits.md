@@ -1,8 +1,5 @@
-!SLIDE bullets incremental
-
-# QUESTIONS?
-
-* `:help`
+!SLIDE
+# THANKS
 
 !SLIDE bullets smaller
 
@@ -20,4 +17,23 @@
 !SLIDE center
 
 ![](../images/prags-cover.png)
+
+!SLIDE transition=scrollRight
+
+## What is the collective noun
+## for
+# PIRATES?
+
+!SLIDE center
+
+![](../images/pirates-collective.png)
+
+
+
+!SLIDE transition=scrollLeft
+
+!SLIDE bullets incremental
+# QUESTIONS?
+
+* `:help`
 
