@@ -1,0 +1,11 @@
+body {
+  font-family: "Trade Gothic LT Std";
+}
+h1,h2 {
+  font-family: "Trade Gothic LT Std";
+  font-weight: bold;
+}
+a:visited {
+  color: black;
+  text-decoration: underline;
+}

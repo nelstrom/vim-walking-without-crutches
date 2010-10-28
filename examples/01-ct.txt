@@ -1,0 +1,8 @@
+origin:
+<a href="#">Click to download</a>
+
+target:
+<a href="#">Click here</a>
+
+demo (ft ct<):
+<a href="#">Click to download</a>

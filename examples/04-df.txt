@@ -1,0 +1,8 @@
+origin:
+<video src="vim.mov"/>
+
+target:
+<video>
+
+demo (f<space> df/):
+<video src="vim.mov"/>

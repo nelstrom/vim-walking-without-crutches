@@ -1,1 +1,16 @@
-{ "name": "Vim - walking without crutches", "sections": [ {"section":"intro"} ]}
+{ 
+  "name": "Vim - walking without crutches", 
+  "sections": [ 
+    {"section":"intro"}             // librarians
+    , {"section":"modal"}           // optimists
+    , {"section":"crutches"}        // surrealists
+    , {"section":"thinking-doing"}
+    , {"section":"cursor-movement"} // ninjas
+    , {"section":"text-objects"}
+    , {"section":"credits"}         // pirates
+  ]
+}
+
+
+
+

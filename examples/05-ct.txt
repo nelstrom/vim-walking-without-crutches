@@ -1,0 +1,8 @@
+source:
+<a href="#">Click here</a>
+
+target
+<a href="#">better copy here</a>
+
+demo (fC ct<):
+<a href="#">Click here</a>
