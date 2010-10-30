@@ -100,14 +100,14 @@
 
 ## What is the collective noun
 ## for
-# SURREALISTS?
+# OPTIMISTS?
 
 !SLIDE center
 
-![](../images/surrealists-illustrated.png)
+![](../images/optimists-illustrated.png)
 
 !SLIDE center
 
-![](../images/surrealists-annotated.png)
+![](../images/optimists-annotated.png)
 
 !SLIDE transition=scrollLeft

@@ -57,3 +57,18 @@
 
 ![Don't make me think](../images/dont-make-me-think2.jpg)
 
+!SLIDE transition=scrollRight
+
+## What is the collective noun
+## for
+# SURREALISTS?
+
+!SLIDE center
+
+![](../images/surrealists-illustrated.png)
+
+!SLIDE center
+
+![](../images/surrealists-annotated.png)
+
+!SLIDE transition=scrollLeft

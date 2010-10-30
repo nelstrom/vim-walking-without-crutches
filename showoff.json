@@ -1,10 +1,10 @@
 { 
   "name": "Vim - walking without crutches", 
   "sections": [ 
-    {"section":"intro"}             // librarians
-    , {"section":"modal"}           // optimists
-    , {"section":"crutches"}        // surrealists
-    , {"section":"thinking-doing"}
+    {"section":"intro"}             // What's a collective noun
+    , {"section":"modal"}           // librarians
+    , {"section":"crutches"}        // optimists
+    , {"section":"thinking-doing"}  // surrealists
     , {"section":"cursor-movement"}
     , {"section":"finding-characters"}
     , {"section":"search-to-navigate"} // ninjas

@@ -46,13 +46,13 @@
 
 # MODAL INTERFACES
 
-* Safari - cmd-F
+* Safari:  ⌘-F
 
 !SLIDE bullets
 
 # MODAL INTERFACES
 
-* TextMate - cmd-F
+* TextMate:  ⌘-F
 
 !SLIDE center
 
@@ -62,7 +62,7 @@
 
 # MODAL INTERFACES
 
-* TextMate - cmd-A
+* TextMate:  ⌘-A
 
 !SLIDE center
 
@@ -90,14 +90,18 @@
 
 ## What is the collective noun
 ## for
-# OPTIMISTS?
+# LIBRARIANS?
 
 !SLIDE center
 
-![](../images/optimists-illustrated.png)
+![](../images/librarians-illustrated.png)
 
 !SLIDE center
 
-![](../images/optimists-annotated.png)
+![](../images/librarians-annotated.png)
+
+!SLIDE center
+
+![](../images/library-with-a-bar.png)
 
 !SLIDE transition=scrollLeft

@@ -49,22 +49,3 @@
 * Emacs footprint is small by today's standards
 * Vim plugins can increase startup time
 
-!SLIDE transition=scrollRight
-
-## What is the collective noun
-## for
-# LIBRARIANS?
-
-!SLIDE center
-
-![](../images/librarians-illustrated.png)
-
-!SLIDE center
-
-![](../images/librarians-annotated.png)
-
-!SLIDE center
-
-![](../images/library-with-a-bar.png)
-
-!SLIDE transition=scrollLeft
