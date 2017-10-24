@@ -7,6 +7,11 @@ Slides for my ArrrrCamp presentation (28 October, 2010):
 * [Watch on Vimeo](https://vimeo.com/16458939)
 * [Read the summary on Vimcasts](http://vimcasts.org/blog/2010/11/arrrrcamp-presentation-vim---walking-without-crutches/)
 
+The slideshow can be served using [Showoff](https://puppetlabs.github.io/showoff/).
+
+    bundle install
+    bundle exec showoff serve
+
 Update
 ------
 
