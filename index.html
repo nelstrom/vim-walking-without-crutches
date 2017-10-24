@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Vim - walking without crutches</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  
+
+  <link rel="stylesheet" type="text/css" href=".//css/highlight/default.css"  />
+  <link rel="stylesheet" type="text/css" href=".//css/mermaid-6.0.0.css" />
+  <link rel="stylesheet" type="text/css" href=".//css/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href=".//css/introjs-2.5.local.css">
+  <link rel="stylesheet" type="text/css" href=".//css/jquery-ui-1.12.1.css">
+  <link rel="stylesheet" type="text/css" href=".//css/showoff.css?v=0.19.2" />
+  <link rel="stylesheet" type="text/css" href=".//css/zoomline-0.0.1.css">
+
+  <script type="text/javascript" src=".//js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery-ui-1.12.1.js"></script>
+
+  <script type="text/javascript" src=".//js/jquery.cycle.all-2.8.0.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad-1.0.0.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min-6a20f83.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-4ff02c5.js"></script>
+  <script type="text/javascript" src=".//js/highlight.pack-9.2.0.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter-1.1.js"></script>
+  <script type="text/javascript" src=".//js/bigtext-0.1.8.js"></script>
+  <script type="text/javascript" src=".//js/zoomline-0.0.1.js"></script>
+  <script type="text/javascript" src=".//js/simpleStrings-0.0.1.js"></script>
+  <script type="text/javascript" src=".//js/mermaid-6.0.0-min.js"></script>
+
+  <!-- waiting on https://github.com/usablica/intro.js/pull/727 -->
+  <script type="text/javascript" src=".//js/intro-2.5.local.js"></script>
+
+  <script type="text/javascript" src=".//js/coffee-script-1.1.3-pre.js"></script>
+
+  <script type="text/javascript" src=".//js/annotations.js?v=0.19.2"></script>
+  <script type="text/javascript" src=".//js/showoff.js?v=0.19.2"></script>
+
+  
+    <link rel="stylesheet" href=".//file/styles.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+    $(function(){
+      setupPreso(false, './');
+    });
+
+    editUrl     = "";
+    interactive = false;
+    master      = false;
+
+    keymap               = {
+  "space": "NEXT",
+  "d": "DEBUG",
+  "up": "PREV",
+  "left": "PREV",
+  "pageup": "PREV",
+  "down": "NEXT",
+  "right": "NEXT",
+  "pagedown": "NEXT",
+  "R": "RELOAD",
+  "r": "REFRESH",
+  "c": "CONTENTS",
+  "t": "CONTENTS",
+  "h": "HELP",
+  "/": "HELP",
+  "?": "HELP",
+  "b": "BLANK",
+  ".": "BLANK",
+  "F": "FOOTER",
+  "f": "FOLLOW",
+  "n": "NOTES",
+  "esc": "CLEAR",
+  "p": "PAUSE",
+  "P": "PRESHOW",
+  "x": "EXECUTE",
+  "f5": "EXECUTE"
+};
+    keycode_dictionary   = {
+  "0": "\\",
+  "8": "backspace",
+  "9": "tab",
+  "12": "num",
+  "13": "enter",
+  "16": "shift",
+  "17": "ctrl",
+  "18": "alt",
+  "19": "pause",
+  "20": "caps",
+  "27": "esc",
+  "32": "space",
+  "33": "pageup",
+  "34": "pagedown",
+  "35": "end",
+  "36": "home",
+  "37": "left",
+  "38": "up",
+  "39": "right",
+  "40": "down",
+  "44": "print",
+  "45": "insert",
+  "46": "delete",
+  "48": "0",
+  "49": "1",
+  "50": "2",
+  "51": "3",
+  "52": "4",
+  "53": "5",
+  "54": "6",
+  "55": "7",
+  "56": "8",
+  "57": "9",
+  "59": ";",
+  "61": "=",
+  "65": "a",
+  "66": "b",
+  "67": "c",
+  "68": "d",
+  "69": "e",
+  "70": "f",
+  "71": "g",
+  "72": "h",
+  "73": "i",
+  "74": "j",
+  "75": "k",
+  "76": "l",
+  "77": "m",
+  "78": "n",
+  "79": "o",
+  "80": "p",
+  "81": "q",
+  "82": "r",
+  "83": "s",
+  "84": "t",
+  "85": "u",
+  "86": "v",
+  "87": "w",
+  "88": "x",
+  "89": "y",
+  "90": "z",
+  "91": "cmd",
+  "92": "cmd",
+  "93": "cmd",
+  "96": "num_0",
+  "97": "num_1",
+  "98": "num_2",
+  "99": "num_3",
+  "100": "num_4",
+  "101": "num_5",
+  "102": "num_6",
+  "103": "num_7",
+  "104": "num_8",
+  "105": "num_9",
+  "106": "num_multiply",
+  "107": "num_add",
+  "108": "num_enter",
+  "109": "num_subtract",
+  "110": "num_decimal",
+  "111": "num_divide",
+  "112": "f1",
+  "113": "f2",
+  "114": "f3",
+  "115": "f4",
+  "116": "f5",
+  "117": "f6",
+  "118": "f7",
+  "119": "f8",
+  "120": "f9",
+  "121": "f10",
+  "122": "f11",
+  "123": "f12",
+  "124": "print",
+  "144": "num",
+  "145": "scroll",
+  "173": "-",
+  "186": ";",
+  "187": "=",
+  "188": ",",
+  "189": "-",
+  "190": ".",
+  "191": "/",
+  "192": "`",
+  "219": "[",
+  "220": "\\",
+  "221": "]",
+  "222": "'",
+  "223": "`",
+  "224": "cmd",
+  "225": "alt",
+  "57392": "ctrl",
+  "63289": "num"
+};
+    keycode_shifted_keys = {
+  "0": ")",
+  "1": "!",
+  "2": "@",
+  "3": "#",
+  "4": "$",
+  "5": "%",
+  "6": "^",
+  "7": "&",
+  "8": "*",
+  "9": "(",
+  "/": "?",
+  ".": ">",
+  ",": "<",
+  "'": "\"",
+  ";": ":",
+  "[": "{",
+  "]": "}",
+  "\\": "|",
+  "`": "~",
+  "=": "+",
+  "-": "_"
+};
+    user_translations    = {
+};
+
+    I18n = new translation({"name":"Showoff Presentation","menu":{"title":"Showoff Menu","table_of_contents":"Table of Contents","downloads":"Downloads","feedback":{"label":"Send Feedback","description":"This slide is...","worst":"Terrible","best":"Awesome","why":"Why...?","send":"Send"},"pace":{"label":"The presenter should...","slower":"Slow Down","faster":"Speed Up"},"question":{"label":"Ask a Question","placeholder":"Ask a question..."},"edit":"Edit Current Slide","clear_annotations":"Clear Annotations","language":"Content Language","close":"Close","help":"Press <code>?</code> for help.","anonymous":"All features are anonymous.","sending":"Sending..."},"navigation":{"next":"Next","previous":"Previous","sync":"Sync Presentation"},"loading":"loading presentation...","activity_complete":"Activity complete","follow":{"label":"Follow Mode:"},"refresh":"Are you sure you want to refresh the slide content?\n\n(Use `RELOAD` to fully reload the entire UI)","reload":"Are you sure you want to reload Showoff?","preshow":{"prompt":"Minutes from now to start?","resume":"Resuming in:"},"tour":{"show":"See the Tour","reset":"Reset Hints","welcome":"<h3>Welcome to Showoff</h3>Let me show you around. After you finish this tour, it won't show again.","displayview":"Start by clicking this button to open the Display Window; then drag it onto the projector.","annotations":"Draw on your slides everywhere the presentation is displayed.","timer":"Set a countdown timer to help you stay on pace.","pace":"Audience members can use this to tell you if you're moving too quickly. Try to keep the indicator centered.","questions":"Questions asked by audience members are displayed here. You'll also see a count indicator on the Display Window when you have questions to answer.","notes":"Configure the notes display by zooming text, resizing the pane, or even popping it out into a new window.","slidesource":"The name of the slide is displayed here.","settings":"Would you like a different presenter layout? Choose that and other settings here.","edit":"This button will open your web-based editor--usually something like GitHub.","report":"Don't forget to report issues when you see them.","activity":{"count":"This will count down as audience members mark their activity complete. Their presentations will pause until completed.","complete":"Check this box when you're ready to move on. The presentation will pause while you're working."},"form":{"responses":"As questions are answered, they'll show up as a bar chart with the number of answers to each question on the right.","display":"Press this button to present a snapshot of the live responses on slide.","save":"Press this button to save your responses. The presentation will pause while answering."},"menu":{"start":"Click here to open the menu.","navigation":"Quickly navigate to any slide.","download":"Download presentation support files.","pace":"Provide pace feedback.","questions":"Ask live questions of the presenter.","feedback":"Provide suggestions for improving the content."}},"downloads":{"title":"File Downloads"},"help":{"title":"Help","next":"Move to the next slide.","prev":"Move to the previous slide.","contents":"Show the table of contents menu.","follow":"Toggle follow mode.","help":"Show this help dialog.","refresh":"Refresh slide content.","reload":"Completely reload Showoff.","blank":"Blank the screen.","footer":"Toggle the display footer.","notes":"Toggle notes display.","clear":"Clear code execution results.","pause":"Pause the presentation.","preshow":"Display slideshow of <tt>preshow</tt> images on a timer.","execute":"Execute the first visible code block.","debug":"Show debugging information.","close":"Close"},"stats":{"title":"Viewing Statistics","stray":"of your audience is not viewing the same slide you are.","idle":"of your audience is idle.","current":"Slides currently being viewed","elapsed":"Elapsed time spent on each slide","nodata":"No data to display.","allcurrent":"All audience members are viewing the presenter's slide."},"forms":{"display":"Display Results","save":"Save"},"presenter":{"topbar":{"annotations":"Annotations","edit":"Edit Slide","report":"Report Issue With Slide","stats":"Viewing Statistics","downloads":"Downloads","display":"Display Window","print":"Print Slides","settings":"Settings","newpage":"Open in a new page...","tooltip":{"annotations":"Enable the annotations subsystem.","edit":"Edit current slide in new window.","report":"Report an issue with the current slide.","stats":"See the slides your audience is interacting with.","downloads":"Open the file downloads in a menu or new page.","display":"Enable the Display Window; you should put this on the projector.","print":"Print slides using a new window.","settings":"Open the Settings dialog."}},"preview":{"next":"Next","previous":"Previous"},"mobile":{"update":"Update"},"notes":{"label":"Showoff Notes","personal":"Personal Notes"},"timer":{"label":"Timer:","start":"Start","pause":"Pause","resume":"Resume","cancel":"Cancel","unit":"minutes"},"pace":{"faster":"Speed Up!","slower":"Slow Down!"},"questions":"Audience Questions","annotation":{"tools":"Tools","lines":"Lines","shapes":"Shapes"},"status":{"label":"Slides:"},"settings":{"label":"Settings","close":"Close","follower":{"label":"Update Follower","tooltip":"Send slide change notifications.","description":"When this is enabled, the Showoff server will track your slide changes. Disable it to observe the presentation without inadvertently causing slide changes."},"remote":{"label":"Enable Remote","tooltip":"Enables tracking of other presenters.","description":"When this is enabled, you can load the presenter in another browser (typically on your mobile phone) to control the presentation."},"layout":{"label":"Layout","default":"Default Layout","thumbs":"Display thumbnail previews of the next and previous slides.","beside":"Display the next slide as a large preview in the main presenter view.","floating":"Open the next slide as a floating window.","confirmation":"Browser security requires confirmation before opening a new window.","open":"Open Window","cancel":"cancel","reset":{"label":"Clear Showoff settings.","tooltip":"Reset Showoff UI settings to default values."}},"language":{"label":"Content Language","tooltip":"Select from available translations, or autoselect based on your browser settings.","description":"This presentation is available in different languages. Choose the language you would like to view or leave it at <tt>automatic</tt> to use your browser settings."}},"print":{"label":"Choose type of printed notes","description":"Select the content you'd like to show under the slides.","none":"Don't include notes","notes":"Presenter Notes","handouts":"Audience Handouts"}},"language":{"auto":"Automatic","disable":"Disable Translations"},"error":{"file_not_found":"File Not Found!"}});
+
+  </script>
+
+
+  <script type="text/javascript">
+    // We want the audience members to see automatic tours. We can assume that they won't be
+    // using many server domains like the presenter might.
+    var autoTour = true;
+
+    $( document ).ready(function() {
+      tours['showoff:activity'] = [
+        {
+          element: ".currentSlide .activityToggle",
+          intro: I18n.t('tour.activity.complete')
+        }
+      ];
+
+      tours['showoff:form'] = [
+        {
+          element: ".currentSlide input.save",
+          intro: I18n.t('tour.form.save')
+        }
+      ];
+
+      tours['showoff:menu'] = [
+        {
+          element: "#hamburger",
+          intro: I18n.t('tour.menu.start')
+        },
+        {
+          element: "#navToggle",
+          intro: I18n.t('tour.menu.navigation')
+        },
+        {
+          element: "#fileDownloads",
+          intro: I18n.t('tour.menu.download')
+        },
+        {
+          element: "#paceFaster",
+          intro: I18n.t('tour.menu.pace')
+        },
+        {
+          element: "#questionToggle",
+          intro: I18n.t('tour.menu.questions')
+        },
+        {
+          element: "#feedbackToggle",
+          intro: I18n.t('tour.menu.feedback')
+        }
+      ].filter(function(item) { return (document.querySelector(item['element'])) });
+      // display tips for only the enabled features
+    });
+  </script>
+</head>
+
+<body>
+<div id="questionsIndicator"></div>
+
+<i id="hamburger" class="fa fa-bars fa-2x"></i>
+<div id="sidebarWrapper">
+    <div id="navigationHover"></div>
+    <div id="feedbackSidebar" class="sideMenu">
+    <img id="disconnected" src=".//css/disconnected.png">
+    <h3>Showoff Menu</h3>
+    <div id="navToggle" class="buttonWrapper"><i class=" fa fa-bookmark"></i> Table of Contents</div>
+    <div id="navigation" class="submenu"></div>
+    
+    <hr>
+
+    
+
+    
+
+    <div id="closeMenu" class="buttonWrapper"><i class="fa fa-close"></i> Close</div>
+    <hr>
+
+    <small>
+        <p>Press <code>?</code> for help.</p>
+        <p>All features are anonymous.</p>
+    </small>
+    </div>
+    <div id="sidebarExit"></div>
+</div>
+<div id="help-modal" title="Help">
+  <div id="help">
+    <div>
+      <span class="description">Move to the next slide.</span>
+      <span class="action">NEXT</span>
+      <span class="hotkeys"><span class="key">space</span><span class="key">down</span><span class="key">right</span><span class="key">pagedown</span></span>
+    </div>
+    <div>
+      <span class="description">Move to the previous slide.</span>
+      <span class="action">PREV</span>
+      <span class="hotkeys"><span class="key">up</span><span class="key">left</span><span class="key">pageup</span></span>
+    </div>
+    <div>
+      <span class="description">Show the table of contents menu.</span>
+      <span class="action">CONTENTS</span>
+      <span class="hotkeys"><span class="key">c</span><span class="key">t</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle follow mode.</span>
+      <span class="action">FOLLOW</span>
+      <span class="hotkeys"><span class="key">f</span></span>
+    </div>
+    <div>
+      <span class="description">Show this help dialog.</span>
+      <span class="action">HELP</span>
+      <span class="hotkeys"><span class="key">h</span><span class="key">/</span><span class="key">?</span></span>
+    </div>
+
+    <hr />
+
+    <div>
+      <span class="description">Refresh slide content.</span>
+      <span class="action">REFRESH</span>
+      <span class="hotkeys"><span class="key">r</span></span>
+    </div>
+    <div>
+      <span class="description">Completely reload Showoff.</span>
+      <span class="action">RELOAD</span>
+      <span class="hotkeys"><span class="key">R</span></span>
+    </div>
+    <div>
+      <span class="description">Blank the screen.</span>
+      <span class="action">BLANK</span>
+      <span class="hotkeys"><span class="key">b</span><span class="key">.</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle the display footer.</span>
+      <span class="action">FOOTER</span>
+      <span class="hotkeys"><span class="key">F</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle notes display.</span>
+      <span class="action">NOTES</span>
+      <span class="hotkeys"><span class="key">n</span></span>
+    </div>
+    <div>
+      <span class="description">Clear code execution results.</span>
+      <span class="action">CLEAR</span>
+      <span class="hotkeys"><span class="key">esc</span></span>
+    </div>
+    <div>
+      <span class="description">Pause the presentation.</span>
+      <span class="action">PAUSE</span>
+      <span class="hotkeys"><span class="key">p</span></span>
+    </div>
+    <div>
+      <span class="description">Display slideshow of <tt>preshow</tt> images on a timer.</span>
+      <span class="action">PRESHOW</span>
+      <span class="hotkeys"><span class="key">P</span></span>
+    </div>
+    <div>
+      <span class="description">Execute the first visible code block.</span>
+      <span class="action">EXECUTE</span>
+      <span class="hotkeys"><span class="key">x</span><span class="key">f5</span></span>
+    </div>
+
+    <hr />
+
+    <div>
+      <span class="description">Show debugging information.</span>
+      <span class="action">DEBUG</span>
+      <span class="hotkeys"><span class="key">d</span></span>
+    </div>
+  </div>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<a id="synchronize"><i class="fa fa-link" aria-hidden="true" href="#"></i> Sync Presentation</a>
+<div id="notes"></div>
+
+<footer id="footer">
+  <span id="followLabel" class="container">Follow Mode: <i id="followMode" class="fa fa-ban" aria-hidden="true"></i></span>
+  <span id="slideInfo" class="container"></span>
+  <span id="debugInfo" class="container"></span>
+  <span id="notesInfo" class="container"></span>
+  <span id="slideFilename" class="container"></span>
+  <img id="disconnected" src=".//css/disconnected.png" />
+</footer>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div data-section="intro" data-title="01_slide" id="intro_01_slide1" class="slide center" data-transition="none">
+<div class="content center" ref="intro/01_slide:1">
+<p><img src="./file//images/title-page.png" alt="VIM - Walking without crutches">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide2" class="slide" data-transition="none">
+<div class="content " ref="intro/01_slide:2">
+<h1>TWO REASONS YOU DIS VIM</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide3" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="intro/01_slide:3">
+<h1>1. You don't grok Vim</h1>
+
+<ul>
+<li>i don't blame you</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide4" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="intro/01_slide:4">
+<h1>2. You confuse it with Vi</h1>
+
+<ul>
+<li>shame on you</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide5" class="slide center" data-transition="none">
+<div class="content center" ref="intro/01_slide:5">
+<p><img src="./file//images/kentbrew-vi-coathanger.png" alt="Vi is like a bent coathanger">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide6" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="intro/01_slide:6">
+<h1>MISCONCEPTIONS</h1>
+
+<ul>
+<li>Emacs is extensible</li>
+<li>Emacs is a memory hog</li>
+<li>Emacs has a long startup time</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide7" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="intro/01_slide:7">
+<h1>MISCONCEPTIONS</h1>
+
+<ul>
+<li>Vim is not extensible</li>
+<li>Vim has fast startup time</li>
+<li>Vim has a low memory footprint</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide8" class="slide center" data-transition="none">
+<div class="content center" ref="intro/01_slide:8">
+<p><img src="./file//images/release-5.0-basic-scripting.png" alt="Vim release 5.0 introduced basic scripting">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="intro" data-title="01_slide" id="intro_01_slide9" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="intro/01_slide:9">
+<h1>TRUTH</h1>
+
+<ul>
+<li>Emacs footprint is small by today's standards</li>
+<li>Vim plugins can increase startup time</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal1" class="slide" data-transition="none">
+<div class="content " ref="modal/modal:1">
+<h1>MODAL INTERFACES</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal2" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:2">
+<p><img src="./file//images/vi-vim-cheat-sheet.png" alt="Visual cheat sheet for VIM">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal3" class="slide" data-transition="none">
+<div class="content " ref="modal/modal:3">
+<h1>WHY MODAL?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal4" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:4">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>are good</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal5" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:5">
+<p><img src="./file//images/remote-controls.jpg" alt="Remote controls for TV, DVD &amp; Sky box">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal6" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:6">
+<p><img src="./file//images/iphone-is-modal.jpg" alt="The iPhone is a modal interface">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal7" class="slide" data-transition="none">
+<div class="content " ref="modal/modal:7">
+<h2>In a modal interface</h2>
+
+<h3>Every <strong>button</strong> performs a different function in each mode</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal8" class="slide" data-transition="none">
+<div class="content " ref="modal/modal:8">
+<h2>In a touch interface</h2>
+
+<h3>Every <strong>pixel</strong> performs a different function in each mode</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal9" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:9">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>are everywhere</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal10" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:10">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>Safari:  ⌘-F</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal11" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:11">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>TextMate:  ⌘-F</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal12" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:12">
+<p><img src="./file//images/textmate-find-dialogue.png" alt="TextMate's find/replace dialogue box">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal13" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:13">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>TextMate:  ⌘-A</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal14" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:14">
+<p><img src="./file//images/select-all-text.png" alt="cmd-A selects all text">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal15" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:15">
+<p><img src="./file//images/select-all-files.png" alt="cmd-A selects all files">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal16" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="modal/modal:16">
+<h1>TEXTMATE</h1>
+
+<h2>IS A</h2>
+
+<h1>MODAL EDITOR!</h1>
+
+<ul>
+<li>not a very good one</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal17" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="modal/modal:17">
+<h1>MODAL INTERFACES</h1>
+
+<ul>
+<li>are everywhere</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal18" class="slide" data-transition="scrollRight">
+<div class="content " ref="modal/modal:18">
+<h2>What is the collective noun</h2>
+
+<h2>for</h2>
+
+<h1>LIBRARIANS?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal19" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:19">
+<p><img src="./file//images/librarians-illustrated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal20" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:20">
+<p><img src="./file//images/librarians-annotated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="modal" data-title="modal" id="modal_modal21" class="slide center" data-transition="none">
+<div class="content center" ref="modal/modal:21">
+<p><img src="./file//images/library-with-a-bar.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches1" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:1">
+<h1>CRUTCHES</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches2" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:2">
+<p><img src="./file//images/00-vanilla-mate.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches3" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:3">
+<h2>NERD Tree</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches4" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:4">
+<p><img src="./file//images/nerd-tree.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches5" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:5">
+<p><img src="./file//images/01-open-in-new-window.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches6" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:6">
+<p><img src="./file//images/02-mate-ghetto-splits.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches7" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:7">
+<p><img src="./file//images/03-mate-faux-splits.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches8" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:8">
+<p><img src="./file//images/05-mate-split-no-drawer.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches9" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:9">
+<p><img src="./file//images/06-mate-modal-drawer-A.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches10" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:10">
+<p><img src="./file//images/07-mate-modal-drawer-B.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches11" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:11">
+<p><img src="./file//images/release-3.0-split-windows.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches12" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:12">
+<p><img src="./file//images/vimcasts-episode-15.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches13" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:13">
+<h1>INDENTATION</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches14" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="crutches/crutches:14">
+<h2>TextMate</h2>
+
+<ul>
+<li> ⌘] - indent</li>
+<li> ⌘[ - outdent</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches15" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:15">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches16" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="crutches/crutches:16">
+<h2>Vim</h2>
+
+<ul>
+<li>
+<code>&gt;</code> - indent</li>
+<li>
+<code>&lt;</code> - outdent</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches17" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:17">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches18" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="crutches/crutches:18">
+<ul>
+<li><code>vmap &lt;D-]&gt; &gt;gv</code></li>
+<li><code>vmap &lt;D-[&gt; &lt;gv</code></li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches19" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:19">
+<h2>CODE SMELL?</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches20" class="slide" data-transition="none">
+<div class="content " ref="crutches/crutches:20">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches21" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="crutches/crutches:21">
+<ul>
+<li><code>&gt;..</code></li>
+<li><code>&lt;..</code></li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches22" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="crutches/crutches:22">
+<h2>THE VIM WAY</h2>
+
+<ul>
+<li>do it (<code>&gt;</code>)</li>
+<li>repeat (<code>.</code>)</li>
+<li>reverse (<code>u</code>)</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches23" class="slide" data-transition="scrollRight">
+<div class="content " ref="crutches/crutches:23">
+<h2>What is the collective noun</h2>
+
+<h2>for</h2>
+
+<h1>OPTIMISTS?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches24" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:24">
+<p><img src="./file//images/optimists-illustrated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="crutches" data-title="crutches" id="crutches_crutches25" class="slide center" data-transition="none">
+<div class="content center" ref="crutches/crutches:25">
+<p><img src="./file//images/optimists-annotated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing1" class="slide" data-transition="none">
+<div class="content " ref="thinking-doing/thinking-doing:1">
+<h1>THINKING</h1>
+
+<h2>and</h2>
+
+<h1>DOING</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing2" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:2">
+<p><img src="./file//images/thought-action.jpg" alt="Think a thought, act on it">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing3" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:3">
+<p><img src="./file//images/jumping_brain.jpg" alt="Agile mind">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing4" class="slide" data-transition="none">
+<div class="content " ref="thinking-doing/thinking-doing:4">
+<h1>Models and Tests</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing5" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="thinking-doing/thinking-doing:5">
+<h2>Jump to test</h2>
+
+<ul>
+<li>what is <code>current_model</code>?</li>
+<li> ⌘T <code>crtmdtes</code>
+</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing6" class="slide" data-transition="none">
+<div class="content " ref="thinking-doing/thinking-doing:6">
+<pre><code>rails_app/
+  app/
+    models/
+      thing.rb
+      other.rb
+  spec/
+    models/
+      thing_spec.rb
+      other_spec.rb
+</code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing7" class="slide" data-transition="none">
+<div class="content " ref="thinking-doing/thinking-doing:7">
+<h2>rails.vim</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing8" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="thinking-doing/thinking-doing:8">
+<h1><code>:A</code></h1>
+
+<ul>
+<li>jump to alternate file</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing9" class="slide" data-transition="none">
+<div class="content " ref="thinking-doing/thinking-doing:9">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing10" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:10">
+<p><img src="./file//images/coin-spin.jpg" alt="Coin spin"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing11" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:11">
+<p><img src="./file//images/dont-make-me-think2.jpg" alt="Don't make me think"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing12" class="slide" data-transition="scrollRight">
+<div class="content " ref="thinking-doing/thinking-doing:12">
+<h2>What is the collective noun</h2>
+
+<h2>for</h2>
+
+<h1>SURREALISTS?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing13" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:13">
+<p><img src="./file//images/surrealists-illustrated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="thinking-doing" data-title="thinking-doing" id="thinking-doing_thinking-doing14" class="slide center" data-transition="none">
+<div class="content center" ref="thinking-doing/thinking-doing:14">
+<p><img src="./file//images/surrealists-annotated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement1" class="slide" data-transition="none">
+<div class="content " ref="cursor-movement/cursor-movement:1">
+<h1>MOVING THE CURSOR</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement2" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:2">
+<p><img src="./file//images/target.png" alt="Cursor target">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement3" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:3">
+<p><img src="./file//images/quake4.jpg" alt="Cursor target">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement4" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="cursor-movement/cursor-movement:4">
+<h1>FITT'S LAW</h1>
+
+<ul>
+<li>the time required to rapidly move to a target area is a function of the distance to and the size of the target</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement5" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:5">
+<p><img src="./file//images/fitts-law-1.png" alt="Fitt's law illustrated">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement6" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:6">
+<h2>[duh]</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement7" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:7">
+<p><img src="./file//images/fitts-law-2.png" alt="Fitt's law illustrated">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement8" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:8">
+<p><img src="./file//images/cursor-keys-2.jpg" alt="Cursor keys">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement9" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:9">
+<p><img src="./file//images/rookmove.png" alt="The legal moves for a Rook in chess">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement10" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:10">
+<p><img src="./file//images/fridge-poetry-1.jpg" alt="Cursor keys">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement11" class="slide" data-transition="none">
+<div class="content " ref="cursor-movement/cursor-movement:11">
+<h2>HUNT &amp; PECK</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement12" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:12">
+<p><img src="./file//images/knightmove.png" alt="The legal moves for a Knight in chess">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement13" class="slide" data-transition="none">
+<div class="content " ref="cursor-movement/cursor-movement:13">
+<h2>The Knight can move</h2>
+
+<h3>two squares along, then one square on the perpendicular axis</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement14" class="slide" data-transition="none">
+<div class="content " ref="cursor-movement/cursor-movement:14">
+<h2>The Knight can move</h2>
+
+<h3>to the closest squares that no other piece can reach</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement15" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:15">
+<p><img src="./file//images/queenmove.png" alt="The legal moves for a Queen in chess">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement16" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:16">
+<p><img src="./file//images/queen-blind-spots.png" alt="In chess, the Queen has blind spots">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="cursor-movement" data-title="cursor-movement" id="cursor-movement_cursor-movement17" class="slide center" data-transition="none">
+<div class="content center" ref="cursor-movement/cursor-movement:17">
+<p><img src="./file//images/knight-and-queen-2.png" alt="In chess, the Queen has blind spots">     </p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters1" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:1">
+<h1>FINDING CHARACTERS</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters2" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="finding-characters/finding-characters:2">
+<h1>FINDING CHARACTERS</h1>
+
+<ul>
+<li>
+<code>f{char}</code> jumps to next occurence of <code>{char}</code>
+</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters3" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:3">
+<p><img src="./file//images/finding-characters-start.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters4" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:4">
+<p><img src="./file//images/finding-P-character-1.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters5" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:5">
+<h1><code>fp</code></h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters6" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:6">
+<p><img src="./file//images/finding-P-character-2.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters7" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:7">
+<p><img src="./file//images/888.jpg" alt="scrabble tiles"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters8" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:8">
+<p><img src="./file//images/finding-T-character-1.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters9" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:9">
+<h1><code>ft</code></h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters10" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:10">
+<p><img src="./file//images/finding-T-character-2.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters11" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:11">
+<h1><code>;</code></h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters12" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:12">
+<p><img src="./file//images/finding-T-character-3.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters13" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:13">
+<p><img src="./file//images/finding-T-character-4.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters14" class="slide center" data-transition="none">
+<div class="content center" ref="finding-characters/finding-characters:14">
+<p><img src="./file//images/finding-T-character-5.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters15" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:15">
+<h1><code>ft;;;</code></h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters16" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="finding-characters/finding-characters:16">
+<h2>THE VIM WAY</h2>
+
+<ul>
+<li>do it (<code>f{char}</code>)</li>
+<li>repeat (<code>;</code>)</li>
+<li>reverse (<code>,</code>)</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters17" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="finding-characters/finding-characters:17">
+<h1>Besides mindreading</h1>
+
+<ul>
+<li>use with <code>d{motion}</code>
+</li>
+<li>use with <code>c{motion}</code>
+</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters18" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="finding-characters/finding-characters:18">
+<h1>Inclusive or exclusive</h1>
+
+<ul>
+<li>
+<code>f/F</code> land on the match</li>
+<li>
+<code>t/T</code> stop one short of the match</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters19" class="slide" data-transition="none">
+<div class="content " ref="finding-characters/finding-characters:19">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="finding-characters" data-title="finding-characters" id="finding-characters_finding-characters20" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="finding-characters/finding-characters:20">
+<h1>LIMITATIONS</h1>
+
+<h2><code>f{char}</code></h2>
+
+<ul>
+<li>only works</li>
+<li>on current line</li>
+<li>for single characters</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate1" class="slide" data-transition="none">
+<div class="content " ref="search-to-navigate/search-to-navigate:1">
+<h1>SEARCH</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate2" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="search-to-navigate/search-to-navigate:2">
+<h1>TYPING</h1>
+
+<h1>REPLACES</h1>
+
+<h1>SELECTION</h1>
+
+<ul>
+<li>OS-wide</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate3" class="slide" data-transition="none">
+<div class="content " ref="search-to-navigate/search-to-navigate:3">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate4" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="search-to-navigate/search-to-navigate:4">
+<h1>VISUAL MODE</h1>
+
+<ul>
+<li>just another mode</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate5" class="slide" data-transition="none">
+<div class="content " ref="search-to-navigate/search-to-navigate:5">
+<h1>YOU CAN SEARCH</h1>
+
+<h2>in visual mode</h2>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate6" class="slide" data-transition="none">
+<div class="content " ref="search-to-navigate/search-to-navigate:6">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate7" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="search-to-navigate/search-to-navigate:7">
+<h2>THE VIM WAY</h2>
+
+<ul>
+<li>do it (<code>/pattern</code>)</li>
+<li>repeat (<code>n</code>)</li>
+<li>reverse (<code>N</code>)</li>
+</ul>
+
+<!-- !SLIDE center
+
+![](../images/flying-kick.jpg) -->
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate8" class="slide" data-transition="scrollRight">
+<div class="content " ref="search-to-navigate/search-to-navigate:8">
+<h2>What is the collective noun</h2>
+
+<h2>for</h2>
+
+<h1>NINJAS?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate9" class="slide center" data-transition="none">
+<div class="content center" ref="search-to-navigate/search-to-navigate:9">
+<p><img src="./file//images/ninjas-illustrated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="search-to-navigate" data-title="search-to-navigate" id="search-to-navigate_search-to-navigate10" class="slide center" data-transition="none">
+<div class="content center" ref="search-to-navigate/search-to-navigate:10">
+<p><img src="./file//images/ninjas-annotated.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects1" class="slide" data-transition="none">
+<div class="content " ref="text-objects/text-objects:1">
+<h1>TEXT OBJECTS</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects2" class="slide center" data-transition="none">
+<div class="content center" ref="text-objects/text-objects:2">
+<h2>
+<code>f{char}</code> &amp; <code>/search</code>
+</h2>
+
+<p><img src="./file//images/flying-kick.jpg" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects3" class="slide center" data-transition="none">
+<div class="content center" ref="text-objects/text-objects:3">
+<h2>TEXT OBJECTS</h2>
+
+<p><img src="./file//images/scissor-kick.jpg" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects4" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="text-objects/text-objects:4">
+<h1>TEXT OBJECTS</h1>
+
+<ul>
+<li>define regions of text by structure</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects5" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="text-objects/text-objects:5">
+<h1>"quotes"</h1>
+
+<ul>
+<li>
+<code>a"</code> - a quoted string</li>
+<li>
+<code>i"</code> - inner quoted string</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects6" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="text-objects/text-objects:6">
+<h1>(brackets)</h1>
+
+<ul>
+<li>
+<code>ab</code> - a block</li>
+<li>
+<code>ib</code> - inner block</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects7" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="text-objects/text-objects:7">
+<h1>{braces}</h1>
+
+<ul>
+<li>
+<code>aB</code> - a Block</li>
+<li>
+<code>iB</code> - inner Block</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects8" class="slide bullets" data-transition="none">
+<div class="content bullets" ref="text-objects/text-objects:8">
+<h1>
+<code>&lt;xml&gt;</code>tags<code>&lt;/xml&gt;</code>
+</h1>
+
+<ul>
+<li>
+<code>at</code> - a tag block</li>
+<li>
+<code>it</code> - inner tag block</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="text-objects" data-title="text-objects" id="text-objects_text-objects9" class="slide" data-transition="none">
+<div class="content " ref="text-objects/text-objects:9">
+<h3>demo</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits1" class="slide" data-transition="none">
+<div class="content " ref="credits/credits:1">
+<h1>THANKS</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits2" class="slide bullets smaller" data-transition="none">
+<div class="content bullets smaller" ref="credits/credits:2">
+<h1>Image Credits</h1>
+
+<ul>
+<li><a href="http://www.flickr.com/photos/jepoirrier/954701212/" target="_blank">Brain cell(s)</a></li>
+<li><a href="http://www.flickr.com/photos/adevigal/760240636/" target="_blank">Dan Haren - Oakland Athletics Pitcher</a></li>
+<li><a href="http://www.flickr.com/photos/lapolab/2403693037/" target="_blank">Jumping Brain</a></li>
+<li><a href="http://www.flickr.com/photos/silkegb/2745580110/" target="_blank">888 - Scrabble</a></li>
+<li>
+<a href="http://www.flickr.com/photos/johnlinwood/265403724/sizes/l/" target="_blank">Spinning coin</a>
+&lt;!--* <a href="http://www.flickr.com/photos/pianowow/4319725263/" target="_blank">White Rook</a>--&gt;</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits3" class="slide" data-transition="none">
+<div class="content " ref="credits/credits:3">
+<h3>JUST ONE MORE THING...</h3>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits4" class="slide center" data-transition="none">
+<div class="content center" ref="credits/credits:4">
+<p><img src="./file//images/prags-cover.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits5" class="slide bullets incremental" data-transition="none">
+<div class="content bullets incremental" ref="credits/credits:5">
+<h1>QUESTIONS?</h1>
+
+<ul>
+<li><code>:help</code></li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits6" class="slide" data-transition="scrollRight">
+<div class="content " ref="credits/credits:6">
+<h2>What is the collective noun</h2>
+
+<h2>for</h2>
+
+<h1>PIRATES?</h1>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="credits" data-title="credits" id="credits_credits7" class="slide center" data-transition="none">
+<div class="content center" ref="credits/credits:7">
+<p><img src="./file//images/pirates-collective.png" alt=""></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+</div>
+<div id="buttonNav">
+  <div id="buttonPrev"><i class="fa fa-chevron-left fa-lg"></i> Previous</div><div id="buttonNext">Next <i class="fa fa-chevron-right fa-lg"></i></div>
+</div>
+<div id="pauseScreen">
+  PAUSED
+</div>
+
+</body>
+</html>
