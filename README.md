@@ -4,7 +4,7 @@ vim-walking-without-crutches
 Slides for my ArrrrCamp presentation (28 October, 2010):
 
 * [Watch the video](http://old.arrrrcamp.be/videos/vim-walking-without-crutches) (requires silverlight)
-* [View the slides](http://walking-without-crutches.heroku.com/#1)
+* [Watch on Vimeo](https://vimeo.com/16458939)
 * [Read the summary on Vimcasts](http://vimcasts.org/blog/2010/11/arrrrcamp-presentation-vim---walking-without-crutches/)
 
 Update
